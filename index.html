@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的纪念日</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        /* 全局禁止滚动，爱心全屏 */
+        html, body {
+            overflow: hidden;
+            height: 100%;
+        }
+        /* 温馨背景图 + 居中布局 */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* 背景图（可替换成自己的图片链接） */
+            background: url("https://raw.githubusercontent.com/gyqcyx/gyqcyx.github.io/refs/heads/main/pic.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            /* 半透明遮罩，让文字更清晰 */
+            position: relative;
+        }
+        /* 遮罩层：让背景变暗，文字更显眼 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            z-index: -1;
+        }
+        /* 主标题样式 */
+        .title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ff5e7d;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+        }
+        /* 天数数字（超大突出） */
+        .days {
+            font-size: 100px;
+            font-weight: bold;
+            color: #ff3366;
+            margin: 20px 0;
+            animation: fadeIn 1s ease;
+            text-shadow: 2px 2px 10px rgba(255, 94, 125, 0.3);
+        }
+        /* 单位文字 */
+        .unit {
+            font-size: 32px;
+            color: #555;
+        }
+        /* 副标题 */
+        .subtitle {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #666;
+            text-shadow: 0 0 5px #fff;
+        }
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ====================== 爱心动画样式 ====================== */
+        #hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .heart {
+            position: absolute;
+            color: #ff3366;
+            font-size: 15px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 爱心容器 -->
+    <div id="hearts"></div>
+
+    <h1 class="title">GYQ&CYX,我们已经在一起</h1>
+    <div class="days" id="dayCount">0</div>
+    <div class="unit">天</div>
+    <p class="subtitle">岁岁年年，长久相伴</p>
+
+    <script>
+        // ====================== 【只需要修改这里！】 ======================
+        // 1. 修改为你们的纪念日日期 格式：年-月-日
+        const startDate = new Date("2026-03-23"); 
+        // ================================================================
+
+        // 计算天数
+        const today = new Date();
+        const timeDiff = today - startDate;
+        const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        document.getElementById("dayCount").textContent = dayDiff;
+
+        // ====================== 爱心飘落动画 ======================
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            // 随机位置、大小、下落速度
+            const x = Math.random() * 100;
+            const size = Math.random() * 20 + 10;
+            const duration = Math.random() * 3 + 4;
+
+            heart.style.left = x + '%';
+            heart.style.fontSize = size + 'px';
+            heart.style.animationDuration = duration + 's';
+
+            document.getElementById('hearts').appendChild(heart);
+
+            // 动画结束后删除爱心
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // 每100ms生成一个爱心
+        setInterval(createHeart, 100);
+    </script>
+</body>
+</code>
